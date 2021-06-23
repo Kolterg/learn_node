@@ -13,39 +13,6 @@ const path = require('path')
 const path1800 = path.join(__dirname, '1800');
 const path2000 = path.join(__dirname, '2000');
 
-// fs.readdir(path1800, (err, files) => {
-//     if (err) {
-//         console.log(err);
-//         return;
-//     }
-//
-//     files.forEach(file => {
-//         list1800.push(file);
-//
-//         fs.rename(path1800 + '/' + file, path2000 + '/' + file, (err1) => {
-//             if (err1) {
-//                 console.log(err1);
-//             }
-//         });
-//
-//     }, 100);
-// });
-//
-// fs.readdir(path2000, (err, files) => {
-//     if (err) {
-//         console.log(err);
-//         return;
-//     }
-//
-//     files.forEach(file => {
-//         fs.rename(path2000 + '/' + file, path1800 + '/' + file, (err1) => {
-//             if (err1) {
-//                 console.log(err1);
-//             }
-//         });
-//     });
-// });
-
 fs.readdir(path1800, (err, files) => {
     if (err) {
         console.log(err);
@@ -53,9 +20,43 @@ fs.readdir(path1800, (err, files) => {
     }
 
     files.forEach(file => {
-        temporaryPath = path.join(path1800, file)
-        const human = require(temporaryPath);
-        console.log(human);                         // Не працюэ!
+        list1800.push(file);
 
+        fs.rename(path1800 + '/' + file, path2000 + '/' + file, (err1) => {
+            if (err1) {
+                console.log(err1);
+            }
+        });
+
+    }, 100);
+});
+
+fs.readdir(path2000, (err, files) => {
+    if (err) {
+        console.log(err);
+        return;
+    }
+
+    files.forEach(file => {
+        fs.rename(path2000 + '/' + file, path1800 + '/' + file, (err1) => {
+            if (err1) {
+                console.log(err1);
+            }
+        });
     });
 });
+
+// Не працюэ!
+// fs.readdir(path1800, (err, files) => {
+//     if (err) {
+//         console.log(err);
+//         return;
+//     }
+//
+//     files.forEach(file => {
+//         temporaryPath = path.join(path1800, file)
+//         const human = require(temporaryPath);
+//         console.log(human);
+//
+//     });
+// });
