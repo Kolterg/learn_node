@@ -8,7 +8,7 @@
 // (Більше інформації в записі лекції)
 
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
 
 const path1800 = path.join(__dirname, '1800');
 const path2000 = path.join(__dirname, '2000');
@@ -20,8 +20,6 @@ fs.readdir(path1800, (err, files) => {
     }
 
     files.forEach(file => {
-        list1800.push(file);
-
         fs.rename(path1800 + '/' + file, path2000 + '/' + file, (err1) => {
             if (err1) {
                 console.log(err1);
