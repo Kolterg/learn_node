@@ -9,23 +9,15 @@
     <title>Login</title>
 </head>
 <body>
-
-{{#if isAdult}}
-    <div>Login in</div>
-{{else}}
-    <div>Is not a login</div>
-{{/if}}
-
 <div class="box">
     <div>Login</div>
     <div>Password</div>
-    <div>Email</div>
 </div>
 <form action="/login" method="post">
     <input type="text" name="login">
     <input type="text" name="password">
-    <input type="text" name="email">
     <input type="submit" value="send">
 </form>
+<button><a href="/">Home</a></button>
 </body>
 </html>

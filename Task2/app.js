@@ -21,60 +21,90 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const expressHbs = require('express-handlebars');
+const util = require('util');
 
 const app = express();
 
 const staticPath = path.join(__dirname, 'static');
 const pathUsersList = path.join(__dirname, 'users-list.json');
+const writeFilePromise = util.promisify(fs.writeFile);
+const readFilePromise = util.promisify(fs.readFile);
+
+let isAdult = false;
 
 app.use(express.static(staticPath));
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', '.hbs');
-app.set('views', staticPath);
 app.engine('.hbs', expressHbs({
     defaultLayout: false
 }));
+app.set('views', staticPath);
 
 //------------------
+
+const getUsers = async () => {
+    const users = await readFilePromise(pathUsersList, 'utf-8');
+    return JSON.parse(users);
+};
+
+app.get('/', (req, res) => {
+    res.render('home', { isAdult });
+});
 
 app.get('/reg', (req, res) => {
     res.render('registration');
 });
 
 app.get('/login', (req, res) => {
-    res.render('login', {isAdult: true});
+    res.render('login');
 });
 
-app.get('/users', (req, res) => {
-    res.render('users');
+app.get('/user', (req, res) => {
+    res.render('user', { isAdult });
+});
+
+app.get('/users', async (req, res) => {
+    const users = await getUsers();
+
+    res.render('users', { users });
 });
 
 //-----------------------------
 
+app.post('/reg', async (req, res) => {
+    const user = req.body;
+    const users = await getUsers();
 
-app.post('/users', (req, res) => {
-    console.log(req.body);
-    const user = JSON.stringify(req.body);
+    const userExist = users.find((value) => value.login === user.login);
+    if (userExist) {
+        const err = 'Login is already busy!';
+        res.render('error', { err });
+        return;
+    }
 
-    fs.appendFile(pathUsersList, user, err => {
-        if (err) {
-            console.log(err);
-        }
-    });
+    users.push(user);
+    await writeFilePromise(pathUsersList, JSON.stringify(users));
 
-    res.json('Registration work');
+    res.render('home');
 });
 
-app.post('/login', (req, res) => {
-    console.log(req.body);
-    res.json('Login work');
+app.post('/login', async (req, res) => {
+    const user = req.body;
+    const users = await getUsers();
+
+    const userExist = users.find((value) => value.login === user.login);
+    if (!userExist) {
+        const err = 'Uncorrected login or password';
+        res.render('error', { err });
+        return;
+    }
+
+    isAdult = true;
+
+    res.render('home');
 });
-
-const users = require('./users-list.json')
-
-console.log(users);
 
 app.listen(3000, () => {
     console.log('App listen 3000');

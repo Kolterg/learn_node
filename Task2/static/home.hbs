@@ -9,8 +9,16 @@
 </head>
 <body>
 <h2>Welcome to users list service!</h2>
-<button>Registration</button>
-<button>Login</button>
-<button>Show all users</button>
+<button><a href="reg">Registration</a></button>
+<button><a href="login">Login</a></button>
+<button><a href="users">Show all users</a></button>
+<button><a href="user">User account</a></button>
+<div>
+    {{#if isAdult}}
+        Login IN
+    {{else}}
+
+    {{/if}}
+</div>
 </body>
 </html>

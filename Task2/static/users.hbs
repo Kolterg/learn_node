@@ -5,10 +5,11 @@
     <title>Users list</title>
 </head>
 <body>
-<ul>
-    {{$each users}}
-        <li>{{this.email}}</li>
+<ol>
+    {{#each users}}
+        <li>{{this.login}}</li>
     {{/each}}
-</ul>
+</ol>
+<button><a href="/">Home</a></button>
 </body>
 </html>
