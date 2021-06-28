@@ -24,4 +24,12 @@ module.exports = {
 
         res.json('User is del!');
     },
+
+    updateUserById: async (req, res) => {
+        const { userId } = req.params;
+
+        await userService.updateUserById(userId, req.body);
+
+        res.json('User is update!');
+    }
 };

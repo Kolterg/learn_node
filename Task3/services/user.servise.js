@@ -26,12 +26,21 @@ module.exports = {
 
     findOneById: async (userId) => {
         const users = await getUsers();
+
         return users[userId];
     },
 
     deleteUserById: async (userId) => {
         const users = await getUsers();
+
         users.splice(userId, 1);
         await writeFilePromise(pathUsersDb, JSON.stringify(users));
     },
+
+    updateUserById: async (userId, user) => {
+        const users = await getUsers();
+
+        users[userId] = user;
+        await writeFilePromise(pathUsersDb, JSON.stringify(users));
+    }
 };
