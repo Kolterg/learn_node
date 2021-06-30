@@ -1,4 +1,4 @@
-const userService = require('../services/user.servise');
+const userService = require('../services/user.service');
 
 module.exports = {
     checkIsUserPresent: async (req, res, next) => {
