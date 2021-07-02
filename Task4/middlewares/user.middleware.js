@@ -1,6 +1,6 @@
 const { UserModel } = require('../dataBase');
-const { userRolesEnum } = require('../constants');
-const userService = require('../services/user.service');
+const { userRolesEnum, responseCodesEnum, errorMessages } = require('../constants');
+const ErrorHandler = require('../errors/ErrorHandler');
 
 module.exports = {
     checkIsUserPresent: async (req, res, next) => {
@@ -10,7 +10,7 @@ module.exports = {
             const userById = await UserModel.findById(userId);
 
             if (!userById) {
-                throw new Error('User not found!');
+                throw new ErrorHandler(errorMessages.USER_NOT_FOUND, responseCodesEnum.NOT_FOUND);
             }
 
             req.user = userById;
@@ -21,27 +21,27 @@ module.exports = {
         }
     },
 
+    checkIsLoginBusy: async (req, res, next) => {
+        const users = await UserModel.find({});
+        const user = req.body;
+
+        const userExist = users.find((value) => value.login === user.login);
+        if (userExist) {
+            throw new ErrorHandler(errorMessages.LOGIN_IS_BUSY);
+        }
+
+        next();
+    },
+
     checkIsAdmin: (req, res, next) => {
         try {
             const { role } = req.body;
 
             if (role !== userRolesEnum.ADMIN) {
-                throw new Error('Not admin!');
+                throw new ErrorHandler(errorMessages.NOT_ADMIN);
             }
         } catch (e) {
             next(e);
         }
-    },
-
-    checkIsLoginBusy: async (req, res, next) => {
-        const users = await userService.findAll;
-        const user = req.body;
-
-        const userExist = users.find((value) => value.login === user.login);
-        if (userExist) {
-            throw new Error('Login is already busy!');
-        }
-
-        next();
     }
 };

@@ -1,8 +1,8 @@
 const { Schema, model } = require('mongoose');
 
-const { databaeTablesEnum, userRolesEnum } = require('../../constants');
+const { databaseTablesEnum, userRolesEnum } = require('../../constants');
 
-const userShama = new Schema({
+const userSchema = new Schema({
     login: {
         type: String,
         required: true,
@@ -22,8 +22,4 @@ const userShama = new Schema({
     }
 }, { timestamps: true });
 
-// userShama.virtual('fullName').get(function() {
-//     return `${this.name}`;
-// });
-
-module.exports = model(databaeTablesEnum.USER, userShama);
+module.exports = model(databaseTablesEnum.USER, userSchema);

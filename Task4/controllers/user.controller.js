@@ -1,5 +1,5 @@
 const { UserModel } = require('../dataBase');
-const { responseCodesEnum } = require('../constants');
+const { responseCodesEnum, constants } = require('../constants');
 
 module.exports = {
     getAllUsers: async (req, res, next) => {
@@ -34,9 +34,10 @@ module.exports = {
 
     deleteUserById: async (req, res, next) => {
         try {
-            await UserModel.findByIdAndDelete(req.body);
+            const { userId } = req.params;
+            await UserModel.findByIdAndDelete(userId);
 
-            res.status(responseCodesEnum.NO_CONTENT).json('User is del!');
+            res.status(responseCodesEnum.NO_CONTENT).json(constants.UserIsDelete);
         } catch (e) {
             next(e);
         }
@@ -48,7 +49,7 @@ module.exports = {
 
             await UserModel.findByIdAndUpdate(userId, req.body);
 
-            res.json('User is update!');
+            res.status(responseCodesEnum.CREATED).json(req.body);
         } catch (e) {
             next(e);
         }
