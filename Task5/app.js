@@ -1,11 +1,8 @@
-const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
-const ErrorHandler = require('./errors/ErrorHandler');
+const path = require('path');
 
-const { UserModel } = require('./dataBase');
-const { passwordHasher } = require('./helpers');
-const { userRouter } = require('./routes');
+const { userRouter, authRouter } = require('./routes');
 const { responseCodesEnum, errorMessages } = require('./constants');
 
 const app = express();
@@ -23,19 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(staticPath));
 
-app.use('/auth', async (req, res) => {
-    const { password, email } = req.body;
-
-    const userByEmail = await UserModel.findOne({ email }).select('+password');
-
-    if (!userByEmail) {
-        throw new ErrorHandler(responseCodesEnum.FORBIDDEN, errorMessages.WRONG_EMAIL_OR_PASSWORD);
-    }
-
-    await passwordHasher.compare(userByEmail.password, password);
-
-    res.json('Ok');
-});
+app.use('/auth', authRouter);
 app.use('/users', userRouter);
 // eslint-disable-next-line no-use-before-define
 app.use('*', _notFoundHandleError);

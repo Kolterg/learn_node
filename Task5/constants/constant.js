@@ -1,3 +1,3 @@
 module.exports = {
-    UserIsDelete: 'User is delete!'
+    UserIsDelete: 'User is delete!',
 };
