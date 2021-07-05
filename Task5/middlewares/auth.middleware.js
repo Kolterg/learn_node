@@ -27,7 +27,7 @@ module.exports = {
             const { error } = authValid.signIn.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, errorMessages.WRONG_EMAIL_OR_PASSWORD);
+                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, errorMessages.WRONG_EMAIL_OR_PASSWORD, 1);
             }
 
             next();

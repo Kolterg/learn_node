@@ -11,7 +11,7 @@ module.exports = {
             const userById = await UserModel.findById(userId);
 
             if (!userById) {
-                throw new ErrorHandler(responseCodesEnum.NOT_FOUND, errorMessages.USER_NOT_FOUND);
+                throw new ErrorHandler(responseCodesEnum.NOT_FOUND, errorMessages.USER_NOT_FOUND, 1);
             }
 
             req.user = userById;
@@ -27,7 +27,18 @@ module.exports = {
         const userByEmail = await UserModel.findOne({ email });
 
         if (userByEmail) {
-            throw new ErrorHandler(responseCodesEnum.ALREADY_EXIST, errorMessages.EMAIL_ALREADY_EXIST);
+            throw new ErrorHandler(responseCodesEnum.ALREADY_EXIST, errorMessages.EMAIL_ALREADY_EXIST, 1);
+        }
+
+        next();
+    },
+
+    checkIsLoginBusy: async (req, res, next) => {
+        const { login } = req.body;
+        const userByLogin = await UserModel.findOne({ login });
+
+        if (userByLogin) {
+            throw new ErrorHandler(responseCodesEnum.ALREADY_EXIST, errorMessages.LOGIN_IS_BUSY, 3);
         }
 
         next();
@@ -38,24 +49,39 @@ module.exports = {
             const { role } = req.body;
 
             if (role !== userRolesEnum.ADMIN) {
-                throw new ErrorHandler(responseCodesEnum.BAD_REQUEST, errorMessages.NOT_ADMIN);
+                throw new ErrorHandler(responseCodesEnum.BAD_REQUEST, errorMessages.NOT_ADMIN, 1);
             }
         } catch (e) {
             next(e);
         }
     },
 
-    checkIsUserValid: (req, res, next) => {
+    checkIsUserCreateValid: (req, res, next) => {
         try {
             const { error } = userValidator.createUser.validate(req.body);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, errorMessages.WRONG_DATA, 2);
             }
 
             next();
         } catch (e) {
             next(e);
         }
-    }
+    },
+
+    checkIsUserUpdateValid: (req, res, next) => {
+        try {
+            const { error } = userValidator.updateUser.validate(req.body);
+
+            if (error) {
+                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, errorMessages.WRONG_DATA, 2);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
 };

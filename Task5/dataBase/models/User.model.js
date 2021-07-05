@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 const { databaseTablesEnum, userRolesEnum } = require('../../constants');
 
 const userSchema = new Schema({
-    name: {
+    login: {
         type: String,
         required: true,
     },

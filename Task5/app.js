@@ -28,7 +28,7 @@ app.use('*', _notFoundHandleError);
 app.use(_handleError);
 
 app.listen(3000, () => {
-    console.log(constants.Port);
+    console.log(`App listen ${constants.PORT}`);
 });
 
 // eslint-disable-next-line no-unused-vars
