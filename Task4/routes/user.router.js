@@ -11,6 +11,6 @@ router.delete('/:userId', userMiddleware.checkIsUserPresent, userController.dele
 
 router.get('/:userId', userMiddleware.checkIsUserPresent, userController.getUserById);
 
-router.post('/:userId', userMiddleware.checkIsUserPresent, userController.updateUserById);
+router.put('/:userId', userMiddleware.checkIsUserPresent, userController.updateUserById);
 
 module.exports = router;

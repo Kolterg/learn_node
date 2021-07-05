@@ -27,7 +27,7 @@ module.exports = {
 
         const userExist = users.find((value) => value.login === user.login);
         if (userExist) {
-            throw new ErrorHandler(errorMessages.LOGIN_IS_BUSY);
+            throw new ErrorHandler(responseCodesEnum.BAD_REQUEST, errorMessages.LOGIN_IS_BUSY, 1);
         }
 
         next();
@@ -38,7 +38,7 @@ module.exports = {
             const { role } = req.body;
 
             if (role !== userRolesEnum.ADMIN) {
-                throw new ErrorHandler(errorMessages.NOT_ADMIN);
+                throw new ErrorHandler(responseCodesEnum.BAD_REQUEST, errorMessages.NOT_ADMIN, 2);
             }
         } catch (e) {
             next(e);

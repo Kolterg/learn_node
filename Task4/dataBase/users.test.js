@@ -1,13 +1,13 @@
 module.exports = [
-    { login: 'Kolterg', password: 'Password', email: 'mark.reta99@gmail.com' },
+    { name: 'Kolterg', password: 'Password', email: 'mark.reta99@gmail.com' },
     {
-        login: 'Oleg',
+        name: 'Oleg',
         password: 'Passwordd',
         email: 'dgdshsvfsc@gmail.com'
     },
-    { login: 'Sara', password: 'Hello', email: 'asfasf@gmail.com' },
+    { name: 'Sara', password: 'Hello', email: 'asfasf@gmail.com' },
     {
-        login: 'NonTueGatto',
+        name: 'NonTueGatto',
         password: 'LaLaLa12345',
         email: 'yourgatto@gmail.com'
     }

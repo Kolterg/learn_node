@@ -1,4 +1,4 @@
-module.exports.constants = require('./constant');
+module.exports.constants = require('./constants');
 module.exports.userRolesEnum = require('./user-roles.enum');
 module.exports.databaseTablesEnum = require('./database-tables.enum');
 module.exports.responseCodesEnum = require('./response-codes.enum');

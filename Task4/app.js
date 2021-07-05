@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const { userRouter } = require('./routes');
-const { responseCodesEnum, errorMessages } = require('./constants');
+const { responseCodesEnum, errorMessages, constants } = require('./constants');
 
 const app = express();
 
@@ -27,7 +27,7 @@ app.use('*', _notFoundHandleError);
 app.use(_handleError);
 
 app.listen(3000, () => {
-    console.log('App listen 3000');
+    console.log(`App listen ${constants.PORT}`);
 });
 
 // eslint-disable-next-line no-unused-vars
