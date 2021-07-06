@@ -1,1 +1,1 @@
-module.exports.errorFunc = require('./errors-functon');
+module.exports.errorFunc = require('./errors-functons');
