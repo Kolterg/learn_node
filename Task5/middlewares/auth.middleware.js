@@ -1,6 +1,7 @@
 const authValid = require('../validators/auth/auth.validator');
 const ErrorHandler = require('../errors/ErrorHandler');
-const { responseCodesEnum, errorMessages } = require('../constants');
+const { WRONG_EMAIL_OR_PASSWORD } = require('../errors/error-messages');
+const { responseCodesEnum } = require('../constants');
 const { UserModel } = require('../dataBase');
 
 module.exports = {
@@ -11,7 +12,8 @@ module.exports = {
             const userByEmail = await UserModel.findOne({ email }).select('+password');
 
             if (!userByEmail) {
-                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, errorMessages.WRONG_EMAIL_OR_PASSWORD);
+                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, WRONG_EMAIL_OR_PASSWORD.message,
+                    WRONG_EMAIL_OR_PASSWORD.code);
             }
 
             req.user = userByEmail;
@@ -27,7 +29,8 @@ module.exports = {
             const { error } = authValid.signIn.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, errorMessages.WRONG_EMAIL_OR_PASSWORD, 1);
+                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, WRONG_EMAIL_OR_PASSWORD.message,
+                    WRONG_EMAIL_OR_PASSWORD.code);
             }
 
             next();

@@ -1,7 +1,10 @@
 const ErrorHandler = require('../errors/ErrorHandler');
 const userValidator = require('../validators/user/user.validator');
 const { UserModel } = require('../dataBase');
-const { userRolesEnum, responseCodesEnum, errorMessages } = require('../constants');
+const {
+    USER_NOT_FOUND, EMAIL_ALREADY_EXIST, LOGIN_IS_BUSY, NOT_ADMIN, WRONG_DATA
+} = require('../errors/error-messages');
+const { userRolesEnum, responseCodesEnum } = require('../constants');
 
 module.exports = {
     checkIsUserPresent: async (req, res, next) => {
@@ -11,7 +14,7 @@ module.exports = {
             const userById = await UserModel.findById(userId);
 
             if (!userById) {
-                throw new ErrorHandler(responseCodesEnum.NOT_FOUND, errorMessages.USER_NOT_FOUND, 1);
+                throw new ErrorHandler(responseCodesEnum.NOT_FOUND, USER_NOT_FOUND.message, USER_NOT_FOUND.code);
             }
 
             req.user = userById;
@@ -27,7 +30,7 @@ module.exports = {
         const userByEmail = await UserModel.findOne({ email });
 
         if (userByEmail) {
-            throw new ErrorHandler(responseCodesEnum.ALREADY_EXIST, errorMessages.EMAIL_ALREADY_EXIST, 1);
+            throw new ErrorHandler(responseCodesEnum.ALREADY_EXIST, EMAIL_ALREADY_EXIST.message, EMAIL_ALREADY_EXIST.code);
         }
 
         next();
@@ -38,7 +41,7 @@ module.exports = {
         const userByLogin = await UserModel.findOne({ login });
 
         if (userByLogin) {
-            throw new ErrorHandler(responseCodesEnum.ALREADY_EXIST, errorMessages.LOGIN_IS_BUSY, 3);
+            throw new ErrorHandler(responseCodesEnum.ALREADY_EXIST, LOGIN_IS_BUSY.message, LOGIN_IS_BUSY.code);
         }
 
         next();
@@ -49,7 +52,7 @@ module.exports = {
             const { role } = req.body;
 
             if (role !== userRolesEnum.ADMIN) {
-                throw new ErrorHandler(responseCodesEnum.BAD_REQUEST, errorMessages.NOT_ADMIN, 1);
+                throw new ErrorHandler(responseCodesEnum.BAD_REQUEST, NOT_ADMIN.message, NOT_ADMIN.code);
             }
         } catch (e) {
             next(e);
@@ -61,7 +64,7 @@ module.exports = {
             const { error } = userValidator.createUser.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, errorMessages.WRONG_DATA, 2);
+                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, WRONG_DATA.message, WRONG_DATA.code);
             }
 
             next();
@@ -75,7 +78,7 @@ module.exports = {
             const { error } = userValidator.updateUser.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, errorMessages.WRONG_DATA, 2);
+                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, WRONG_DATA.message, WRONG_DATA.code);
             }
 
             next();
