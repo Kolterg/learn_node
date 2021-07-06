@@ -1,5 +1,6 @@
 const { UserModel } = require('../dataBase');
-const { userRolesEnum, responseCodesEnum, errorMessages } = require('../constants');
+const { USER_NOT_FOUND, LOGIN_IS_BUSY, NOT_ADMIN } = require('../errors/error-messages');
+const { userRolesEnum, responseCodesEnum } = require('../constants');
 const ErrorHandler = require('../errors/ErrorHandler');
 
 module.exports = {
@@ -10,7 +11,7 @@ module.exports = {
             const userById = await UserModel.findById(userId);
 
             if (!userById) {
-                throw new ErrorHandler(errorMessages.USER_NOT_FOUND, responseCodesEnum.NOT_FOUND);
+                throw new ErrorHandler(responseCodesEnum.NOT_FOUND, USER_NOT_FOUND.message, USER_NOT_FOUND.code);
             }
 
             req.user = userById;
@@ -27,7 +28,7 @@ module.exports = {
 
         const userExist = users.find((value) => value.login === user.login);
         if (userExist) {
-            throw new ErrorHandler(responseCodesEnum.BAD_REQUEST, errorMessages.LOGIN_IS_BUSY, 1);
+            throw new ErrorHandler(responseCodesEnum.BAD_REQUEST, LOGIN_IS_BUSY.message, LOGIN_IS_BUSY.code);
         }
 
         next();
@@ -38,7 +39,7 @@ module.exports = {
             const { role } = req.body;
 
             if (role !== userRolesEnum.ADMIN) {
-                throw new ErrorHandler(responseCodesEnum.BAD_REQUEST, errorMessages.NOT_ADMIN, 2);
+                throw new ErrorHandler(responseCodesEnum.BAD_REQUEST, NOT_ADMIN.message, NOT_ADMIN.code);
             }
         } catch (e) {
             next(e);
