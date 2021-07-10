@@ -19,6 +19,10 @@ module.exports = {
         message: 'Uncorrected data!',
         code: '403.2'
     },
+    PERMISSION_DENIED: {
+        message: 'Permission denied!',
+        code: '403.3'
+    },
     ROUE_NOT_FOUND: {
         message: 'Rout not found',
         code: '404.1',

@@ -2,7 +2,7 @@ const { userRolesEnum, responseCodesEnum } = require('../constants');
 const { UserModel } = require('../dataBase');
 const {
     ErrorHandler, errorMessages: {
-        USER_NOT_FOUND, EMAIL_ALREADY_EXIST, LOGIN_IS_BUSY, NOT_ADMIN, WRONG_DATA
+        USER_NOT_FOUND, EMAIL_ALREADY_EXIST, LOGIN_IS_BUSY, NOT_ADMIN, WRONG_DATA, PERMISSION_DENIED
     }
 } = require('../errors');
 const userValidator = require('../validators/user/user.validator');
@@ -78,7 +78,7 @@ module.exports = {
             const { role } = req.user;
 
             if (!rolesArr.includes(role)) {
-                throw new Error('Permission denied!');
+                throw new ErrorHandler(responseCodesEnum.FORBIDDEN, PERMISSION_DENIED.message, PERMISSION_DENIED.code);
             }
 
             next();
