@@ -1,10 +1,11 @@
-const ErrorHandler = require('../errors/ErrorHandler');
-const userValidator = require('../validators/user/user.validator');
+const { userRolesEnum, responseCodesEnum } = require('../constants');
 const { UserModel } = require('../dataBase');
 const {
-    USER_NOT_FOUND, EMAIL_ALREADY_EXIST, LOGIN_IS_BUSY, NOT_ADMIN, WRONG_DATA
-} = require('../errors/error-messages');
-const { userRolesEnum, responseCodesEnum } = require('../constants');
+    ErrorHandler, errorMessages: {
+        USER_NOT_FOUND, EMAIL_ALREADY_EXIST, LOGIN_IS_BUSY, NOT_ADMIN, WRONG_DATA
+    }
+} = require('../errors');
+const userValidator = require('../validators/user/user.validator');
 
 module.exports = {
     checkIsUserPresent: async (req, res, next) => {

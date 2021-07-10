@@ -32,3 +32,11 @@ app.use(errorFunctions._unknownError);
 app.listen(constant.PORT, () => {
     console.log(`App listen ${constant.PORT}`);
 });
+
+// 1. '10m'  '30d'  'access'  в константи
+//
+// 2. немає флоу на рефреш
+//
+// 3. checkUserRoles :
+// Error  ->  ErrorHandler
+// 'Permission denied!' в константи

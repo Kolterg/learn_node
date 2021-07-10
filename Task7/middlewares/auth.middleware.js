@@ -1,7 +1,7 @@
 const authValid = require('../validators/auth/auth.validator');
 const { responseCodesEnum, constant: { AUTHORIZATION } } = require('../constants');
 const { OAuthModel } = require('../dataBase');
-const { ErrorHandler, errorMessages: { WRONG_EMAIL_OR_PASSWORD } } = require('../errors');
+const { ErrorHandler, errorMessages: { WRONG_EMAIL_OR_PASSWORD, NO_TOKEN } } = require('../errors');
 const { authService } = require('../services');
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
             const token = req.get(AUTHORIZATION);
 
             if (!token) {
-                throw new ErrorHandler(responseCodesEnum.UNAUTHORIZED, 'No Token!');
+                throw new ErrorHandler(responseCodesEnum.UNAUTHORIZED, NO_TOKEN.message, NO_TOKEN.code);
             }
 
             await authService.verifyToken(token);
@@ -33,7 +33,7 @@ module.exports = {
             const tokenObject = await OAuthModel.findOne({ accessToken: token });
 
             if (!tokenObject) {
-                throw new ErrorHandler(responseCodesEnum.UNAUTHORIZED, 'No Token!');
+                throw new ErrorHandler(responseCodesEnum.UNAUTHORIZED, NO_TOKEN.message, NO_TOKEN.code);
             }
 
             req.user = tokenObject;

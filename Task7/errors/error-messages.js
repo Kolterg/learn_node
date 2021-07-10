@@ -7,6 +7,10 @@ module.exports = {
         message: 'Not admin!',
         code: '400.1',
     },
+    NO_TOKEN: {
+        message: 'No Token!',
+        code: '401.1',
+    },
     WRONG_EMAIL_OR_PASSWORD: {
         message: 'Wrong Email or Password!',
         code: '403.1'
