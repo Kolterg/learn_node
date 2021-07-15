@@ -1,6 +1,6 @@
-const { ErrorHandler, errorMessages: { WRONG_EMAIL_OR_PASSWORD } } = require('../errors');
 const { responseCodesEnum, constant: { AUTHORIZATION } } = require('../constants');
 const { OAuthModel } = require('../dataBase');
+const { ErrorHandler, errorMessages: { WRONG_EMAIL_OR_PASSWORD } } = require('../errors');
 const { passwordHasher } = require('../helpers');
 const { authService } = require('../services');
 
