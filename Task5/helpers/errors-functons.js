@@ -11,7 +11,7 @@ function _unknownError(err, req, res, next) {
         });
 }
 
-function _notFoundError(err, req, res, next) {
+function _notFoundError(req, res, next) {
     next({
         status: responseCodesEnum.NOT_FOUND,
         message: ROUE_NOT_FOUND.message,
